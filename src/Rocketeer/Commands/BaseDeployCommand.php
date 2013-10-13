@@ -26,7 +26,8 @@ abstract class BaseDeployCommand extends Command
 		return array(
 			array('pretend', 'p', InputOption::VALUE_NONE,     'Returns an array of commands to be executed instead of actually executing them'),
 			array('on',      'C', InputOption::VALUE_REQUIRED, 'The connection(s) to execute the Task in'),
-			array('stage',   'S', InputOption::VALUE_REQUIRED, 'The stage to execute the Task in')
+			array('stage',   'S', InputOption::VALUE_REQUIRED, 'The stage to execute the Task in'),
+			array('config',  'c', InputOption::VALUE_REQUIRED, 'The config file to use for deployment')
 		);
 	}
 
@@ -126,7 +127,7 @@ abstract class BaseDeployCommand extends Command
 
 		// Check for server credentials
 		$connection  = array_get($connections, $connectionName, array());
-		$credentials = array('host' => true, 'username' => true, 'password' => false, 'key' => false);
+		$credentials = array('host' => true, 'username' => true, 'password' => false, 'key' => false, 'keyphrase' => false);
 
 		// Gather credentials
 		foreach ($credentials as $credential => $required) {

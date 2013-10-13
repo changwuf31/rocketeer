@@ -275,6 +275,40 @@ class RocketeerServiceProvider extends ServiceProvider
 			});
 		}
 
+		$configFile = $this->getConfigFile($app);
+		if ($configFile && file_exists($configFile)) {
+			$app['config']->afterLoading('rocketeer', function ($me, $group, $items) use ($configFile) {
+				$custom = include $configFile;
+				return array_replace_recursive($items, $custom);
+			});
+		}
+
 		return $app;
+	}
+
+	protected function getConfigFile(Container $app)
+	{
+		$retval = FALSE;
+		if (isset($_SERVER['argv']))
+		{
+			$next = FALSE;
+			foreach ($_SERVER['argv'] as $argv)
+			{
+				if ($next)
+				{
+					$retval = $argv;
+					break;
+				}
+				if ('-c' == $argv)
+				{
+					$next = TRUE;
+				}
+			}
+		}
+		if ($retval)
+		{
+			$retval = sprintf('%s/app/config/packages/anahkiasen/rocketeer/%s.php', $app['path.base'], $retval);
+		}
+		return $retval;
 	}
 }
