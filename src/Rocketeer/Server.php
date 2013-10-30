@@ -29,7 +29,7 @@ class Server
 	 * @param Container  $app
 	 * @param string     $storage Path to the storage folder
 	 */
-	public function __construct(Container $app, $storage = null)
+	public function __construct(Container $app, $storage = null, $config = 'config')
 	{
 		$this->app = $app;
 
@@ -41,7 +41,7 @@ class Server
 
 		// Get correct storage path
 		$storage = $storage ?: $app['path.storage'].DS.'meta';
-		$this->repository = $storage.DS.'deployments.json';
+		$this->repository = $storage.DS.'deployments.'.$config.'.json';
 	}
 
 	////////////////////////////////////////////////////////////////////
