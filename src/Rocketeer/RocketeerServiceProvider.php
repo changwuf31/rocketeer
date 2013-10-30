@@ -25,7 +25,7 @@ class RocketeerServiceProvider extends ServiceProvider
 	 */
 	protected $commands;
 
-	protected $config;
+	protected static $config;
 
 	/**
 	 * Register the service provider.
@@ -74,7 +74,7 @@ class RocketeerServiceProvider extends ServiceProvider
 		}
 
 		$serviceProvider = new static($app);
-		$this->config = 'config';
+		static::$config = 'config';
 
 		// Bind classes
 		$app = $serviceProvider->bindCoreClasses($app);
@@ -134,7 +134,7 @@ class RocketeerServiceProvider extends ServiceProvider
 		});
 
 		$app->bind('rocketeer.server', function ($app) {
-			return new Server($app, null, $this->config);
+			return new Server($app, null, static::$config);
 		});
 
 		$app->bind('rocketeer.bash', function ($app) {
@@ -310,8 +310,8 @@ class RocketeerServiceProvider extends ServiceProvider
 		}
 		if ($retval)
 		{
-			$this->config = $retval;
-			$retval       = sprintf('%s/app/config/packages/anahkiasen/rocketeer/%s.php', $app['path.base'], $retval);
+			static::$config = $retval;
+			$retval         = sprintf('%s/app/config/packages/anahkiasen/rocketeer/%s.php', $app['path.base'], $retval);
 		}
 		return $retval;
 	}
