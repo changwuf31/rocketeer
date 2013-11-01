@@ -13,7 +13,7 @@ class Sync extends Deploy
 	 *
 	 * @var string
 	 */
-	protected $description = 'Atnetwork Style Sync from atn-staging to atn-production';
+	protected $description = 'Atn Style Sync from atn-staging to atn-production';
 
 	/**
 	 * Run the Task

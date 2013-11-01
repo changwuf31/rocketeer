@@ -220,6 +220,7 @@ class TasksQueue
 	{
 		foreach ($tasks as $task) {
 			$currentStage = $task->usesStages() ? $stage : null;
+			// printf("%s: Current Stage is %s\n", __METHOD__, $currentStage);
 			$this->app['rocketeer.rocketeer']->setStage($currentStage);
 
 			$state = $task->execute();

@@ -9,6 +9,13 @@ use Rocketeer\Traits\Task;
 class Deploy extends Task
 {
 	/**
+	 * Description of the Task
+	 *
+	 * @var string
+	 */
+	protected $description = 'Atn Style Deployment';
+
+	/**
 	 * Run the Task
 	 *
 	 * @return  void
@@ -31,7 +38,8 @@ class Deploy extends Task
 		}
 
 		// Run Composer
-		if (!$this->runComposer()) {
+		$runComposer = $this->getConfig('runComposer', TRUE);
+		if ($runComposer && !$this->runComposer()) {
 			return $this->cancel();
 		}
 
@@ -42,6 +50,9 @@ class Deploy extends Task
 				return $this->cancel();
 			}
 		}
+
+		// Upload files not in scm
+		$this->uploadNonScmFiles();
 
 		// Set permissions
 		$this->setApplicationPermissions();
@@ -102,5 +113,37 @@ class Deploy extends Task
 		foreach ($files as $file) {
 			$this->setPermissions($file);
 		}
+	}
+
+	protected function uploadNonScmFiles()
+	{
+		$stage     = $this->rocketeer->getStage();
+		$local     = sprintf('%s/app/config/packages/anahkiasen/rocketeer/%s/%s', $this->app['path.base'], $this->server->getConfig(), $stage);
+		if (file_exists($local) && is_dir($local))
+		{
+			$remote   = $this->releasesManager->getCurrentReleasePath();
+			$allFiles = \File::allFiles($local);
+			foreach ($allFiles as $fileObj)
+			{
+				$localFile  = $fileObj->getPathname();
+				$remoteFile = $remote.DS.$fileObj->getRelativePathname();
+				// printf("Put "%s" => "%s"\n", $localFile, $remoteFile);
+				$this->remote->put($localFile, $remoteFile);
+			}
+		}
+
+	}
+
+	/**
+	 * get values from config file
+	 * @param  string $name
+	 * @param  mixed $value
+	 * @return mixed
+	 */
+	protected function getConfig($name, $value)
+	{
+		$retval = $this->rocketeer->getOption($name);
+		if (is_null($retval)) $retval = $value;
+		return $retval;
 	}
 }

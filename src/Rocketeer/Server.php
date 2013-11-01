@@ -24,6 +24,11 @@ class Server
 	protected $repository;
 
 	/**
+	 * Custom Config
+	 */
+	protected $config;
+
+	/**
 	 * Build a new ReleasesManager
 	 *
 	 * @param Container  $app
@@ -31,7 +36,8 @@ class Server
 	 */
 	public function __construct(Container $app, $storage = null, $config = 'config')
 	{
-		$this->app = $app;
+		$this->app    = $app;
+		$this->config = $config;
 
 		// Create personnal storage if necessary
 		if (!$app->bound('path.storage') and !$storage) {
@@ -47,6 +53,11 @@ class Server
 	////////////////////////////////////////////////////////////////////
 	/////////////////////////// REMOTE VARIABLES ///////////////////////
 	////////////////////////////////////////////////////////////////////
+
+	public function getConfig()
+	{
+		return $this->config;
+	}
 
 	/**
 	 * Get the directory separators on the remove server

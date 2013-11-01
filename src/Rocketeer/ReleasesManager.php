@@ -107,9 +107,13 @@ class ReleasesManager
 	 *
 	 * @return string
 	 */
-	public function getCurrentRelease()
+	public function getCurrentRelease($stage = null)
 	{
-		return $this->app['rocketeer.server']->getValue('current_release');
+		if (!$stage)
+		{
+			$stage = $this->app['rocketeer.rocketeer']->getStage();
+		}
+		return $this->app['rocketeer.server']->getValue($stage.'.current_release');
 	}
 
 	/**
@@ -141,6 +145,7 @@ class ReleasesManager
 	 */
 	public function updateCurrentRelease($release)
 	{
-		$this->app['rocketeer.server']->setValue('current_release', $release);
+		$stage = $this->app['rocketeer.rocketeer']->getStage();
+		$this->app['rocketeer.server']->setValue($stage.'.current_release', $release);
 	}
 }

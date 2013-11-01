@@ -194,6 +194,7 @@ class RocketeerServiceProvider extends ServiceProvider
 			'ignite'   => 'Ignite',
 			'rollback' => 'Rollback',
 			'setup'    => 'Setup',
+			'sync'     => 'Sync',
 			'teardown' => 'Teardown',
 			'test'     => 'Test',
 			'update'   => 'Update',
@@ -282,7 +283,7 @@ class RocketeerServiceProvider extends ServiceProvider
 		if ($configFile && file_exists($configFile)) {
 			$app['config']->afterLoading('rocketeer', function ($me, $group, $items) use ($configFile) {
 				$custom = include $configFile;
-				return array_replace_recursive($items, $custom);
+				return $custom;
 			});
 		}
 

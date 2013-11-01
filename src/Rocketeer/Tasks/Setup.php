@@ -78,6 +78,7 @@ class Setup extends Task
 
 		// Create folders
 		foreach ($stages as $stage) {
+			// printf("%s: Current Stage is %s\n", __METHOD__, $currentStage);
 			$this->rocketeer->setStage($stage);
 			$this->createFolder('releases', true);
 			$this->createFolder('current', true);
