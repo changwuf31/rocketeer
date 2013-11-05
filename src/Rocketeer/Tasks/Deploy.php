@@ -28,6 +28,12 @@ class Deploy extends Task
 			$this->executeTask('Setup');
 		}
 
+		// Stage must not be 'atn-production'
+		if ('atn-production' == $this->rocketeer->getStage()) {
+			$this->command->error('Stage \'atn-production\' can\'t be deployed');
+			return $this->history;
+		}
+
 		// Update current release
 		$release = date('YmdHis');
 		$this->releasesManager->updateCurrentRelease($release);

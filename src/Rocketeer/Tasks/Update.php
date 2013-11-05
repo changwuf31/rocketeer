@@ -26,7 +26,10 @@ class Update extends Deploy
 		$this->updateRepository();
 
 		// Recompile dependencies and stuff
-		$this->runComposer();
+		$runComposer = $this->getConfig('runComposer', TRUE);
+		if ($runComposer) {
+			$this->runComposer();
+		}
 
 		// Set permissions
 		$this->setApplicationPermissions();

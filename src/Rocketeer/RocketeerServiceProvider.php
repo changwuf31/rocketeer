@@ -192,6 +192,7 @@ class RocketeerServiceProvider extends ServiceProvider
 			'deploy'   => 'Deploy',
 			'flush'    => 'Flush',
 			'ignite'   => 'Ignite',
+			'package'  => 'Package',
 			'rollback' => 'Rollback',
 			'setup'    => 'Setup',
 			'sync'     => 'Sync',
